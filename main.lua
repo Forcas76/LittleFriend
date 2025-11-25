@@ -11,8 +11,10 @@ end
 local function bootloader(platform, files)
     for _, f in ipairs(files) do
         if fs.exists(f) then
+            print("Torolve: " .. f)
+            os.sleep(1)
             fs.delete(f)
-        end
+        end -- lusta geci vagyok, szóval most ez az updater
 
         local url
         if platform == "turtle" then

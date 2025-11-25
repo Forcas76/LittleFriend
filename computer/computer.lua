@@ -1,8 +1,8 @@
 first_run = {"Szia! Udvozollek a LittleFriend computer oldali rendszereben!",
-             "Fontos! Eloszor a turtle-t kell beuzemelni!"
+             "Fontos! Eloszor a turtle-t kell beuzemelni!",
              "Kell par adat, amit meg kell adnod, hogy a rendszer mukodjon.",
-             "Eloszor is kell egy rednet a computer valamelyik oldalara."
-             "A computer id-je a kovetkezo:" .. computer.id(),
+             "Eloszor is kell egy rednet a computer valamelyik oldalara.",
+             "A computer id-je a kovetkezo:" .. os.getComputerID(),
              "Mi a turtle ID-je?: "}
 
 local turtle_id
