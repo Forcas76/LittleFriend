@@ -87,8 +87,8 @@ if #args == 0 then
     print("Letoltes megkezdese: " .. what_platform)
     download()
 elseif args[1] == "update" then
-    print("Frissites... Biztosan le szeretned frissiteni a programot? (y/n)")
-    if read().lower() == "y" then
+    print("Frissites... Biztosan le szeretned frissiteni a programot? (y/n): ")
+    if read() == "y" then
         update()
     end
     clear(1)
