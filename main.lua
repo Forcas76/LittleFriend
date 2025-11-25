@@ -1,3 +1,6 @@
+local turtle_files = {"turtle.lua", "task_move.lua", "task_dig.lua"}
+local computer_files = {"computer.lua", "commander.lua"}
+
 local function clear(time)
     local timeM = time or 0
     os.sleep(timeM)
@@ -28,42 +31,65 @@ local function bootloader(platform, files)
                 file.write(resp.readAll())
                 file.close()
                 resp.close()
-                clear(0)
                 print("Letoltve: " .. f)
-                os.sleep(1)
+                os.sleep(0.5)
                 success = true
                 break
             else
-                clear(0)
                 print("Hiba a letoltesnel: " .. f .. " (Ujraprobalkozas: " .. attempt .. "/3)")
-                os.sleep(1)
+                os.sleep(0.5)
             end
         end
 
         if not success then
-            clear(0)
             print("Vegleges hiba: " .. f .. " nem toltheto le (ellenorizd az URL-t vagy a HTTP engedelyt)")
-            os.sleep(1)
+           clear(2)
+        end
+    end
+end
+local function download()
+    if turtle then
+        bootloader("turtle", turtle_files)
+        if fs.exists("turtle.lua") then
+            shell.run("turtle.lua")
+        else
+            clear(2)
+            print("Hiba: turtle.lua nem talalhato")
+        end
+    elseif pocket then
+        print("Pocket computer detected - nincs meg platform tamogatas")
+    else
+        bootloader("computer", computer_files)
+        if fs.exists("computer.lua") then
+            shell.run("computer.lua")
+        else
+            clear(2)
+            print("Hiba: computer.lua nem talalhato")
         end
     end
 end
 
+local function update()
+    bootloader("main", {"main.lua"})
+    shell.run("main.lua")
+end
+
+local args = {...}
+local what_platform
 if turtle then
-    bootloader("turtle", {"turtle.lua", "task_move.lua", "task_dig.lua"})
-    if fs.exists("turtle.lua") then
-        shell.run("turtle.lua")
-    else
-        clear(0)
-        print("Hiba: turtle.lua nem talalhato")
-    end
-elseif pocket then
-    print("Pocket computer detected - nincs meg platform tamogatas")
+    what_platform = "Turtle"
 else
-    bootloader("computer", {"computer.lua", "commander.lua"})
-    if fs.exists("computer.lua") then
-        shell.run("computer.lua")
-    else
-        clear(0)
-        print("Hiba: computer.lua nem talalhato")
+    what_platform = "Computer"
+end
+
+if #args == 0 then
+    clear()
+    print("Letoltes megkezdese: " .. what_platform)
+    download()
+elseif args[1] == "update" then
+    print("Frissites... Biztosan le szeretned frissiteni a programot? (y/n)")
+    if read().lower() == "y" then
+        update()
     end
+    clear(1)
 end
