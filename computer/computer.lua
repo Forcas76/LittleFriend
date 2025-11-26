@@ -15,12 +15,18 @@ local function boot()
     end
 
     if turtle_id ~= nil then
-        if rednet.isOpen("left") == false then
-            if rednet.isOpen("right") == false then
-                rednet.open("left")
+        local modem = peripheral.find("modem")
+        if modem then
+            rednet.open(1)
+            rednet.send(turtle_id, "boot", "LittleFriend")
+            local sender, message, protocol = rednet.receive("LittleFriend", 10)
+            if sender == turtle_id and message == "connected" and protocol == "LittleFriend" then
+                print("A LittleFriend rendszert beuzemeltu")
             else
-                rednet.open("right")
+                print("Nincs kapcsolat.")
             end
+        else
+            print("Nincs modem")
         end
     end
 end
