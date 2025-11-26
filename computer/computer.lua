@@ -16,10 +16,12 @@ local function boot()
 
     if turtle_id ~= nil then
         local modem = peripheral.find("modem")
+        local modemside = peripheral.getName(modem)
+        rednet.open(modemside)
         if modem then
-            rednet.open(1)
-            rednet.send(turtle_id, "boot", "LittleFriend")
+            rednet.send(tonumber(turtle_id), "boot", "LittleFriend")
             local sender, message, protocol = rednet.receive("LittleFriend", 10)
+            
             if sender == turtle_id and message == "connected" and protocol == "LittleFriend" then
                 print("A LittleFriend rendszert beuzemeltu")
             else
