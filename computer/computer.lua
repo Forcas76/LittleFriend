@@ -11,6 +11,8 @@ local function boot()
         print(line)
         if i == 6 then
             turtle_id = read(line)
+        else
+            print(line)
         end
     end
 
@@ -21,7 +23,6 @@ local function boot()
         if modem then
             rednet.send(tonumber(turtle_id), "boot", "LittleFriend")
             local sender, message, protocol = rednet.receive("LittleFriend", 10)
-            
             if sender == turtle_id and message == "connected" and protocol == "LittleFriend" then
                 print("A LittleFriend rendszert beuzemeltu")
             else

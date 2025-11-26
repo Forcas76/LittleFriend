@@ -76,6 +76,30 @@ local function update()
     shell.run("main.lua")
 end
 
+local function dev()
+    local files = {
+        main = "U6GG3yMt",
+        json = "0Y2iCPHu",
+        Turtle = "bSahynyZ",
+        Computer = "swStef5Z"
+    }
+    for name, code in ipairs(files) do
+        if fs.exists(name .. ".lua") then
+            fs.delete(name .. ".lua")
+            print("Frissites: " .. name .. ".lua")
+
+        else
+            print("Letöltés: " .. name .. ".lua")
+        end
+        shell.run("pastebin", "get", code, name .. ".lua")
+        if fs.exists(name .. ".lua") then
+            print("Frissítve: " .. name .. ".lua")
+        else
+            print("Hiba: " .. name .. ".lua")
+        end
+    end
+end
+
 local args = {...}
 local what_platform
 if turtle then
@@ -93,5 +117,8 @@ elseif args[1] == "update" then
     if read() == "y" then
         update()
     end
+    clear(1)
+elseif args[2] == "dev" then
+    dev()
     clear(1)
 end
